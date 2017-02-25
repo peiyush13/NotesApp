@@ -1,0 +1,52 @@
+<html>
+
+	<head>
+		<title> practice </title>
+		<link href="css/jquery-ui.min.css" rel="stylesheet">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+
+	</head>
+
+	<body>
+		<div id="root">
+			<input  type="text" v-model="new_name"/>
+			<button  title="yo" @click="addName" type="submit">submit</button>
+			<p  id="name_input"> hello world</p>
+			<div id="list">
+				<p  v-for="name in names">{{name}} </p>	
+			</div>
+		</div>
+	
+	</body>	
+	<script src="js/vue.js"></script>
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+
+
+	<script>
+
+	
+		new Vue({
+			el:'#root',
+			data:{
+					names: ["1","2","3","4"],
+					message: "hello world",
+					new_name:""
+				},
+
+			methods: {
+				addName: function(){
+
+					this.names.push(this.new_name)
+					this.new_name=""
+				}
+			}
+
+		})
+		Vue.nextTick(function () {
+        $('#name_input').draggable();
+});
+
+	</script>
+
+</html>
