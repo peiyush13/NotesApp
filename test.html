@@ -35,23 +35,21 @@
     </div>
     <div class="row">
         <div class="col-xs-2">
-            <textarea :name="note1" class="custom-text-area">{{ name }}</textarea>
+            <textarea id="note1" :name="note1" class="custom-text-area">{{ name }}</textarea>
             <button  @click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button>
-            <button  @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
-            <button  @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
-            <button @click="reset" title="reset this note" class="glyphicon glyphicon-refresh "></button>
+            <button  title="new note" class="glyphicon glyphicon-plus-sign "></button>
+            <button  title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
+            <button title="reset this note" class="glyphicon glyphicon-refresh "></button>
         </div>
     </div>
-    <div class="row">
-        <p v-for="note in notes" class="custom-text-area">
-            {{ note }}
-        </p>
 
-    </div>
 
 </div>
 
 
+<p v-for="note in notes" class="custom-text-area">
+    {{ note }}
+</p>
 
 </body>
 </html>
@@ -91,37 +89,31 @@
                 }
                 ,
                 archive_note:function(){
+//                    alert("note archived");
                     this.notes.push(this.name);
                     console.log(this.notes);
-                },
-
-                reset: function () {
-                    this.name=""
-                },
-
-                delete_note: function () {
-                    this.
                 }
+
             }
     });
 
-    //    new Vue({
-    //        el: '.custom-text-area',
-    //
-    //        data:{
-    //            notes:[],
-    //            note1:"this is new"
-    //        },
-    //
-    //        methods:
-    //            {
-    //                add_note: function(){
-    //                    this.notes.push(note1);
-    //                    console.log(this.notes);
-    //                }
-    //            }
-    //
-    //    });
+//    new Vue({
+//        el: '.custom-text-area',
+//
+//        data:{
+//            notes:[],
+//            note1:"this is new"
+//        },
+//
+//        methods:
+//            {
+//                add_note: function(){
+//                    this.notes.push(note1);
+//                    console.log(this.notes);
+//                }
+//            }
+//
+//    });
 
 
 
