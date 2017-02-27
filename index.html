@@ -4,61 +4,35 @@
       xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
       xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
+
     <meta charset="UTF-8">
     <title>Test</title>
     <link href="css/jquery-ui.min.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/index.css" rel="stylesheet">
 
-    <style>
-        .col-xs-2{
-            height: 200px;
-            margin-left: 15px;
-            margin-right: 15px;
-            margin-top: 40px;
-            padding-bottom: 10px;
-            background-color: white;
-        }
-        .custom-text-area{
-            width: 100%;
-            height: 80%;
-            margin-top:5px;
-            border-radius: 15px;
-            padding: 10px 0 0 3%;
-            background-color: inherit;
-            border-color: transparent;
-        }
-         button
-         {
-             border-radius: 70%;
-             width: 30px;
-             height: 30px;
-         }
-    </style>
 </head>
 <body style="background-color:#c8cbcc">
-<div class="container-fluid" id="MainContainer">
-    <div class="row">
-        <div class="col-xs-2">
-            <textarea disabled class="custom-text-area">This is a notes app</textarea>
-            <button title="archive the note" class="glyphicon glyphicon-saved "></button>
-            <button @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
-            <button @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
-            <button title="reset this note" class="glyphicon glyphicon-refresh "></button>
+    <div class="container-fluid" id="MainContainer">
+        <div class="row">
+            <div class="col-xs-2">
+                <textarea disabled class="custom-text-area">This is a notes app</textarea>
+                <button title="archive the note" class="glyphicon glyphicon-saved "></button>
+                <button @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
+                <button @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
+                <button title="reset this note" class="glyphicon glyphicon-refresh "></button>
+            </div>
+        </div>
+        <div v-for="i in count" >
+            <div class="col-xs-2" :id="i" >
+                <textarea v-model="notes[i-1]" :id=1000+i class="custom-text-area"></textarea>
+                <button  @click="archive_note(i)" title="archive the note" class="glyphicon glyphicon-saved "></button>
+                <button  @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
+                <button  @click="delete_note(i)" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
+                <button @click="reset(i)" title="reset this note" class="glyphicon glyphicon-refresh "></button>
+            </div>
         </div>
     </div>
-    <div v-for="i in count" >
-        <!--<div :id="i" >-->
-        <div class="col-xs-2" :id="i" >
-
-            <textarea v-model="notes[i-1]" :id=1000+i class="custom-text-area"></textarea>
-            <button  @click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button>
-            <button  @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
-            <button  @click="delete_note(i)" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
-            <button @click="reset(i)" title="reset this note" class="glyphicon glyphicon-refresh "></button>
-        </div>
-    </div>
-</div>
 
 
 
@@ -81,30 +55,21 @@
         el: '#MainContainer',
 
         data:{
-            name: "this is new note",
+            name: "this is new note",  //default note
             notes:[],
-            flag:0,
             count:0,
-            drag:drag
-        },
-
-        mounted:function(){
-            Vue.nextTick(function () {
-                $('.col-xs-2').draggable({
-//                    cancel:"text"
-                });
-            })
+            drag:drag          //to try and make components generated using v-for draggable,not working (will find a solution for that)
         },
 
         methods:
             {
                 new_note: function () {
                     this.count++;
-                    this.flag=1;
-                }
-                ,
-                archive_note:function(){
-                    this.notes.push(this.name);
+                },
+
+                archive_note:function(id){
+//                    archive functionality not done yet
+//                    $("#"+(1000+id).toString()).attr('disabled','disabled');
                 },
 
                 reset: function (id) {
@@ -116,20 +81,21 @@
                 delete_note: function (id) {
                     $("#"+id.toString()).remove();
                     this.notes[id-1]="";
-                    console.log(this.notes)
                 },
 
             },
     });
 
 
-    Vue.component('mycomponent', {
-        template: '<div class="row"><div class="col-xs-2"><textarea v-model="name" class="custom-text-area"></textarea><button  @click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button><button  @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button><button  @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button><button @click="reset" title="reset this note" class="glyphicon glyphicon-refresh "></button></div></div>',
+//component is not working properly, havent tried it using props yet.
 
-        data: function(){
-            return vuedata;
-        }
-    });
+//    Vue.component('mycomponent', {
+//        template: '<div class="row"><div class="col-xs-2"><textarea v-model="name" class="custom-text-area"></textarea><button  @click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button><button  @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button><button  @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button><button @click="reset" title="reset this note" class="glyphicon glyphicon-refresh "></button></div></div>',
+//
+//        data: function(){
+//            return vuedata;
+//        }
+//    });
 
 
 </script>
