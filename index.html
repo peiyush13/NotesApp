@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Test</title>
@@ -33,22 +35,20 @@
             <button title="reset this note" class="glyphicon glyphicon-refresh "></button>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-2">
-            <textarea :name="note1" class="custom-text-area">{{ name }}</textarea>
+    <div v-for="i in count" >
+        <!--<div :id="i" >-->
+        <div class="col-xs-2" :id="i" >
+
+            <textarea v-model="notes[i-1]" :id=1000+i class="custom-text-area"></textarea>
             <button  @click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button>
             <button  @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
             <button  @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
-            <button @click="reset" title="reset this note" class="glyphicon glyphicon-refresh "></button>
+            <button @click="reset(i)" title="reset this note" class="glyphicon glyphicon-refresh "></button>
         </div>
     </div>
-    <div class="row">
-        <p v-for="note in notes" class="custom-text-area">
-            {{ note }}
-        </p>
-
-    </div>
-
+    <!--<div v-for="note in notes">-->
+        <!--{{ note }}-->
+    <!--</div>-->
 </div>
 
 
@@ -62,67 +62,63 @@
 <script src="js/bootstrap.min.js"></script>
 <script>
 
-    var component='<div class="row"><div class="col-xs-2"><textarea class="custom-text-area">This is a notes app</textarea><button title="archive the note" class="glyphicon glyphicon-saved "></button><button title="new note" class="glyphicon glyphicon-plus-sign "></button><button title="delete this note" class="glyphicon glyphicon-minus-sign "></button><button title="reset this note" class="glyphicon glyphicon-refresh "></button></div></div>';
-
-    Vue.component('mycomponent', {
-        template: '<div class="row"><div class="col-xs-2"><textarea class="custom-text-area">This is a notes app</textarea><button title="archive the note" class="glyphicon glyphicon-saved "></button><button title="new note" class="glyphicon glyphicon-plus-sign "></button><button title="delete this note" class="glyphicon glyphicon-minus-sign "></button><button title="reset this note" class="glyphicon glyphicon-refresh "></button></div></div>'
-    });
-
-
-
-    Vue.nextTick(function () {
+    var drag=Vue.nextTick(function () {
         $('.col-xs-2').draggable({
 //            cancel:"text"
         });
     })
 
-    new Vue({
+    var vuedata=new Vue({
         el: '#MainContainer',
 
         data:{
-            name: "this is a new note",
-            notes:[]
+            name: "this is new note",
+            notes:[],
+            flag:0,
+            count:0,
+            drag:drag
         },
+
+        mounted:function(){
+            Vue.nextTick(function () {
+                $('.col-xs-2').draggable({
+//                    cancel:"text"
+                });
+            })
+        },
+
         methods:
             {
                 new_note: function () {
-                    alert("new note added");
-                    $('#MainContainer').append(component);
+                    this.count++;
+                    this.flag=1;
                 }
                 ,
                 archive_note:function(){
                     this.notes.push(this.name);
-                    console.log(this.notes);
                 },
 
-                reset: function () {
-                    this.name=""
+                reset: function (id) {
+
+                    this.notes[id-1]="";
+                    $("#"+(1000+id).toString()).val(" ");
                 },
 
                 delete_note: function () {
-                    this.
-                }
-            }
+
+                },
+
+            },
     });
 
-    //    new Vue({
-    //        el: '.custom-text-area',
-    //
-    //        data:{
-    //            notes:[],
-    //            note1:"this is new"
-    //        },
-    //
-    //        methods:
-    //            {
-    //                add_note: function(){
-    //                    this.notes.push(note1);
-    //                    console.log(this.notes);
-    //                }
-    //            }
-    //
-    //    });
 
+    Vue.component('mycomponent', {
+        template: '<div class="row"><div class="col-xs-2"><textarea v-model="name" class="custom-text-area"></textarea><button  @click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button><button  @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button><button  @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button><button @click="reset" title="reset this note" class="glyphicon glyphicon-refresh "></button></div></div>',
+
+        data: function(){
+            return vuedata;
+        }
+    });
 
 
 </script>
