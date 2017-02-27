@@ -8,7 +8,6 @@
     <title>Test</title>
     <link href="css/jquery-ui.min.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/index.css" rel="stylesheet">
 
     <style>
         .col-xs-2{
@@ -16,51 +15,41 @@
             margin-left: 15px;
             margin-right: 15px;
             margin-top: 40px;
-            padding-bottom: 10px;
-            background-color: white;
+            background: #c1e2b3;
         }
         .custom-text-area{
             width: 100%;
             height: 80%;
-            margin-top:5px;
-            border-radius: 15px;
-            padding: 10px 0 0 3%;
-            background-color: inherit;
-            border-color: transparent;
+            margin-top:5px
         }
-         button
-         {
-             border-radius: 70%;
-             width: 30px;
-             height: 30px;
-         }
     </style>
 </head>
-<body style="background-color: #5e5e5e">
+<body>
 <div class="container-fluid" id="MainContainer">
     <div class="row">
         <div class="col-xs-2">
             <textarea disabled class="custom-text-area">This is a notes app</textarea>
             <button title="archive the note" class="glyphicon glyphicon-saved "></button>
             <button @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
-            <button @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
+            <button disabled title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
             <button title="reset this note" class="glyphicon glyphicon-refresh "></button>
         </div>
     </div>
     <div v-for="i in count" >
         <!--<div :id="i" >-->
-        <div class="col-xs-2" :id="i" >
-
-            <textarea v-model="notes[i-1]" :id=1000+i class="custom-text-area"></textarea>
-            <button  @click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button>
-            <button  @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
-            <button  @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
-            <button @click="reset(i)" title="reset this note" class="glyphicon glyphicon-refresh "></button>
-        </div>
+            <div class="col-xs-2" :id="i" >
+                <textarea v-model="notes[i-1]" :id=1000+"i" class="custom-text-area"></textarea>
+                <button  v-on:click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button>
+                <button  v-on:click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
+                <button  v-on:click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
+                <button v-on:click="reset(i-1)" title="reset this note" class="glyphicon glyphicon-refresh "></button>
+            </div>
+        <!--</div>-->
     </div>
-    <!--<div v-for="note in notes">-->
-        <!--{{ note }}-->
-    <!--</div>-->
+    <div v-for="note in notes">
+        {{ note }}
+    </div>
+
 </div>
 
 
@@ -73,6 +62,12 @@
 <script src="js/jquery-ui.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
+
+
+    var custom =Vue.extend({
+        template:'<div class="row"><div class="col-xs-2" :id="i" ><textarea v-model="name" class="custom-text-area"></textarea><button  v-on:click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button><button  v-on:click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button><button  v-on:click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button><button v-on:click="reset" title="reset this note" class="glyphicon glyphicon-refresh "></button></div></div>'
+    })
+
 
     var drag=Vue.nextTick(function () {
         $('.col-xs-2').draggable({
@@ -102,26 +97,34 @@
         methods:
             {
                 new_note: function () {
-                    this.count++;
-                    this.flag=1;
+                    alert("new_node");
+                       this.count++;
+                       this.flag=1;
                 }
                 ,
                 archive_note:function(){
                     this.notes.push(this.name);
+                    console.log(this.notes);
                 },
 
                 reset: function (id) {
 
-                    this.notes[id-1]="";          // vue.js method to delete data
-                    $("#"+(1000+id).toString()).val(" "); // jQuery method to delete data
+                  this.notes[id]="";
+                  console.log(  $("#1000"+id).val());
                 },
 
-                delete_note: function (id) {
-                    $("#")
+                delete_note: function () {
+                    console.log();
                 },
+                toggleflag:function(){
+                    this.flag=0;
+                }
+
 
             },
     });
+
+
 
 
     Vue.component('mycomponent', {
@@ -134,3 +137,9 @@
 
 
 </script>
+
+
+
+
+<!--<div class="row"><div class="col-xs-2" :id="count" ><textarea v-model="name" class="custom-text-area"></textarea><button  v-on:click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button><button  v-on:click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button><button  v-on:click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button><button v-on:click="reset" title="reset this note" class="glyphicon glyphicon-refresh "></button></div></div>-->
+<!--<div class="row"><div class="col-xs-2" :id="count" ><textarea v-model="name" class="custom-text-area"></textarea><button  @click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button><button  @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button><button  @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button><button @click="reset" title="reset this note" class="glyphicon glyphicon-refresh "></button></div></div>-->
