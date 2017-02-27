@@ -31,7 +31,7 @@
             <textarea disabled class="custom-text-area">This is a notes app</textarea>
             <button title="archive the note" class="glyphicon glyphicon-saved "></button>
             <button @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
-            <button disabled title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
+            <button @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
             <button title="reset this note" class="glyphicon glyphicon-refresh "></button>
         </div>
     </div>
@@ -64,7 +64,7 @@
 
     var drag=Vue.nextTick(function () {
         $('.col-xs-2').draggable({
-//            cancel:"t
+//            cancel:"text"
         });
     })
 
@@ -100,12 +100,12 @@
 
                 reset: function (id) {
 
-                    this.notes[id-1]="";
-                    $("#"+(1000+id).toString()).val(" ");
+                    this.notes[id-1]="";          // vue.js method to delete data
+                    $("#"+(1000+id).toString()).val(" "); // jQuery method to delete data
                 },
 
-                delete_note: function () {
-
+                delete_note: function (id) {
+                    $("#")
                 },
 
             },
