@@ -9,7 +9,7 @@
 <head>
 
     <meta charset="UTF-8">
-    <title>Test</title>
+    <title>NotesApp</title>
     <link href="css/jquery-ui.min.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/index.css" rel="stylesheet">
@@ -35,9 +35,9 @@
     <div class="row">
         <div class="col-xs-2">
             <textarea disabled class="custom-text-area">This is a notes app</textarea>
-            <button title="archive the note" class="glyphicon glyphicon-saved "></button>
+            <button  disabled title="archive the note" class="glyphicon glyphicon-saved "></button>
             <button @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
-            <button @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
+            <button  disabled @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
             <button title="reset this note" class="glyphicon glyphicon-refresh "></button>
         </div>
     </div>
@@ -59,13 +59,19 @@
                     <h4 class="modal-title">Archived Notes</h4>
                 </div>
                 <div class="modal-body" >
-                    <div v-for="i in archived_count" >
-                        <div class="col-sm-4 archived" :id="i" >
-                            <textarea v-model="archived_notes[i-1]" :id=1000+i class="custom-text-area"></textarea>
-                            <button  @click="delete_note(i)" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
-                            <button @click="reset(i)" title="reset this note" class="glyphicon glyphicon-refresh "></button>
+                    <div v-if="archived_count == 0">
+                        No Archived Notes
+                    </div>
+                    <div v-else>
+                        <div v-for="i in archived_count" >
+                            <div class="col-sm-4 archived" :id="i" >
+                                <textarea v-model="archived_notes[i-1]" :id=1000+i class="custom-text-area"></textarea>
+                                <button  @click="delete_note(i)" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
+                                <button @click="reset(i)" title="reset this note" class="glyphicon glyphicon-refresh "></button>
+                            </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                 </div>
@@ -86,6 +92,7 @@
         $('.col-xs-2').draggable({
 //            cancel:"text"
         });
+
     })
 
     var vuedata=new Vue({
