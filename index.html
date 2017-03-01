@@ -64,10 +64,10 @@
                     </div>
                     <div v-else>
                         <div v-for="i in archived_count" >
-                            <div class="col-sm-4 archived" :id="i" >
-                                <textarea v-model="archived_notes[i-1]" :id=1000+i class="custom-text-area"></textarea>
-                                <button  @click="delete_note(i)" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
-                                <button @click="reset(i)" title="reset this note" class="glyphicon glyphicon-refresh "></button>
+                            <div class="col-sm-4 archived" :id="i+20000000" >
+                                <textarea v-model="archived_notes[i-1]" :id=10000000+i class="custom-text-area"></textarea>
+                                <button  @click="delete_archived_note(i)" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
+                                <button @click="reset_archived_note(i)" title="reset this note" class="glyphicon glyphicon-refresh "></button>
                             </div>
                         </div>
                     </div>
@@ -88,11 +88,15 @@
 <script src="js/bootstrap.min.js"></script>
 <script>
 
-    var drag=Vue.nextTick(function () {
-        $('.col-xs-2').draggable({
-//            cancel:"text"
-        });
-
+    $(document).ready(function(){
+        Vue.nextTick(function () {
+            $('.col-xs-2').draggable({
+///                 cancel: "text"
+            });
+            $('.col-sm-4').draggable({
+///                 cancel: "text"
+            });
+        })
     })
 
     var vuedata=new Vue({
@@ -104,7 +108,6 @@
             archived_notes:new Array,
             archived_count:0,
             count:0,
-            drag:drag          //to try and make components generated using v-for draggable,not working (will find a solution for that)
         },
 
         methods:
@@ -133,11 +136,17 @@
                     this.notes[id-1]="";
                 },
 
+                reset_archived_note: function (id) {
+                    this.archived_notes[id-1]="";          // vue.js method to delete data
+                    $("#"+(10000000+id).toString()).val(" "); // jQuery method to delete data
+                },
+
+                delete_archived_note: function (id) {
+                    $("#"+(20000000+id).toString()).remove();
+                    this.archived_notes[id-1]="";
+                }
             },
     });
-
-
-    //component is not working properly, havent tried it using props yet.
 
     //    Vue.component('mycomponent', {
     //        template: '<div class="row"><div class="col-xs-2"><textarea v-model="name" class="custom-text-area"></textarea><button  @click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button><button  @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button><button  @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button><button @click="reset" title="reset this note" class="glyphicon glyphicon-refresh "></button></div></div>',
