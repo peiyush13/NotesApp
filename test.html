@@ -1,27 +1,145 @@
+<!DOCTYPE html>
 
-<body onload="download("hello world","note",".txt" )">
 
+
+
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+
+</head>
+
+
+
+<body style="background-color:#c8cbcc">
+
+<nav class="navbar  navbar-center navbar-default navbar-fixed-top  ">
+    <div class="container-fluid">
+        <div class="navbar-header ">
+            <a  class="navbar-brand" href="#">NotesApp</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a  data-toggle="modal" data-target="#myModal">Open Modal</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid" id="MainContainer">
+    <div class="row">
+        <div class="col-xs-2">
+            <textarea disabled class="custom-text-area">This is a notes app</textarea>
+            <button title="archive the note" class="glyphicon glyphicon-saved "></button>
+            <button @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
+            <button @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
+            <button title="reset this note" class="glyphicon glyphicon-refresh "></button>
+        </div>
+    </div>
+    <div v-for="i in count" >
+        <div class="col-xs-2" :id="i" >
+            <textarea v-model="notes[i-1]" :id=1000+i class="custom-text-area"></textarea>
+            <button  @click="archive_note(i)" title="archive the note" class="glyphicon glyphicon-saved "></button>
+            <button  @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button>
+            <button  @click="delete_note(i)" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
+            <button @click="reset(i)" title="reset this note" class="glyphicon glyphicon-refresh "></button>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" role="presentation">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Archived Notes</h4>
+                </div>
+                <div class="modal-body" >
+                    <div v-for="i in archived_count" >
+                        <div class="col-sm-4 archived" :id="i" >
+                            <textarea v-model="archived_notes[i-1]" :id=1000+i class="custom-text-area"></textarea>
+                            <button  @click="delete_note(i)" title="delete this note" class="glyphicon glyphicon-minus-sign "></button>
+                            <button @click="reset(i)" title="reset this note" class="glyphicon glyphicon-refresh "></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+</html>
+
+<script src="js/vue.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script>
-    function download(data, filename, type) {
-        var a = document.createElement("a"),
-        file = new Blob([data], {type: type});
-        if (window.navigator.msSaveOrOpenBlob) // IE10+
-            window.navigator.msSaveOrOpenBlob(file, filename);
-        else { // Others
-            var url = URL.createObjectURL(file);
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(function() {
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            }, 0);
-        }
-    }
+
+    var drag=Vue.nextTick(function () {
+        $('.col-xs-2').draggable({
+//            cancel:"text"
+        });
+    })
+
+    var vuedata=new Vue({
+        el: '#MainContainer',
+
+        data:{
+            name: "this is new note",  //default note
+            notes:[],
+            archived_notes:new Array,
+            archived_count:0,
+            count:0,
+            drag:drag          //to try and make components generated using v-for draggable,not working (will find a solution for that)
+        },
+
+        methods:
+            {
+                new_note: function () {
+                    this.count++;
+                },
+
+                archive_note:function(id){
+//                    archive functionality not done yet
+//                    $("#"+(1000+id).toString()).attr('disabled','disabled');
+                    console.log(this.archived_notes);
+                    this.archived_notes[this.archived_count++]=this.notes[id-1];
+                    console.log(this.archived_notes);
+                    this.delete_note(id);
+                },
+
+                reset: function (id) {
+
+                    this.notes[id-1]="";          // vue.js method to delete data
+                    $("#"+(1000+id).toString()).val(" "); // jQuery method to delete data
+                },
+
+                delete_note: function (id) {
+                    $("#"+id.toString()).remove();
+                    this.notes[id-1]="";
+                },
+
+            },
+    });
 
 
+    //component is not working properly, havent tried it using props yet.
+
+    //    Vue.component('mycomponent', {
+    //        template: '<div class="row"><div class="col-xs-2"><textarea v-model="name" class="custom-text-area"></textarea><button  @click="archive_note" title="archive the note" class="glyphicon glyphicon-saved "></button><button  @click="new_note" title="new note" class="glyphicon glyphicon-plus-sign "></button><button  @click="delete_note" title="delete this note" class="glyphicon glyphicon-minus-sign "></button><button @click="reset" title="reset this note" class="glyphicon glyphicon-refresh "></button></div></div>',
+    //
+    //
+    //        data: function(){
+    //            return vuedata;
+    //        }
+    //    });
 
 
 </script>
